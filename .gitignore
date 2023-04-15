@@ -1,0 +1,12 @@
+/venv
+/src/__pycache__
+/src/Chaos/lib/__pycache__
+.DS_Store
+src/lib/__pycache__
+src/2_Nonlinear_modeling/__pycache__
+src/3_High-speed-data/__pycache__
+src/4-Reconstructing-bifurcation-diagram/__pycache__
+results/esn_model
+results/lv_of_video
+results/pc_of_video
+results/sindy_model
