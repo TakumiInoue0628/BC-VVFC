@@ -1,6 +1,5 @@
 # Bifurcation and chaos in vocal-ventricular fold co-oscillations
-Data driven analysis of experimental data measured from the vocal and ventricular folds.
-Sample codes of experimental data analysis measured from the physical models of vocal and ventricular folds.
+This sample code is a non-linear analysis system for time-series data using the latest knowledge in machine learning. By applying several machine learning techniques to real data such as voice and video observed from a vocal replica model, it is possible to quantitatively discriminate limit cycles and chaos in vocal cord vibrations, and confirm bifurcation structures by the motion state changes depending on parameters.
 This data was observed by T. Matsumoto et al, and the paper has been published.
 
 T. Matsumoto, M. Kanaya, D. Matsushima, C. Han, and I. T. Tokuda, Synchronized and Desynchronized Dynamics Observed from Physical Models of the Vocal and Ventricular Folds, Journal of Voice, December 2021
