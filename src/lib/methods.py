@@ -682,6 +682,7 @@ class Figure_BCVVFC():
                 data, model, t, lyapunov_exponents, 
                 figsize=(35, 5), width_ratios=[4, 4, 7, 8], wspace=0.4,
                 n_shift=25, n_initdel=2000, n_plt=3000, same_lim=True,
+                lw_data=3, lw_model=4,
                 freq_lim=(50, 350),
                 n_dim=4, lyapunov_lim=(-110, 20), 
                 panel_list = ['(a)', '(b)', '(c)', '(d)'], panel_xy_list=[(0.14, 1.), (0.14, 1.), (0.21, 1), (0.25, 1)], panel_fontsize=40, 
@@ -693,7 +694,7 @@ class Figure_BCVVFC():
 
         ax0 = fig.add_subplot(spec[0])
         ax0.set_title('Exp', loc='center')
-        ax0.plot(data[n_initdel:][n_shift:][:n_plt], data[n_initdel:][:-n_shift][:n_plt], linestyle='-', c='k', lw=3)
+        ax0.plot(data[n_initdel:][n_shift:][:n_plt], data[n_initdel:][:-n_shift][:n_plt], linestyle='-', c='k', lw=lw_data)
         ax0.set_xlabel(r'$x(t)$')
         ax0.set_ylabel(r'$x(t-\tau)$')
         ax0.get_xaxis().set_major_formatter(plt.FormatStrFormatter('%.1f'))
@@ -703,7 +704,7 @@ class Figure_BCVVFC():
 
         ax1 = fig.add_subplot(spec[1])
         ax1.set_title('Model', loc='center')
-        ax1.plot(model[n_initdel:][n_shift:][:n_plt], model[n_initdel:][:-n_shift][:n_plt], linestyle='-', c='r', lw=4)
+        ax1.plot(model[n_initdel:][n_shift:][:n_plt], model[n_initdel:][:-n_shift][:n_plt], linestyle='-', c='r', lw=lw_model)
         if same_lim:
             ax1.set_xlim(ax0.get_xlim())
             ax1.set_ylim(ax0.get_ylim())
@@ -756,13 +757,17 @@ class Figure_BCVVFC():
                          #height_ratios =[1, 1],
                          wspace=wspace
                          )
+        x = data.shape[1]
+        y = data.shape[2]
+        a = position[0]
+        b = position[1]
         for i in range(n_shots):
             ax = fig.add_subplot(spec[i])
             if i==0:
                 ax.set_title(title, loc='left')
             ax.imshow(np.rot90(data[start+i*step], -1), cmap='Greys_r', norm=Normalize(vmin=0, vmax=255), aspect=aspect)
             if i==0:
-                ax.plot([position[0], position[0]], [position[1]-width/2, position[1]+width/2], color=c_line, linewidth=lw_line)
+                ax.plot([x-b, x-b], [a-int(width/2), a+int(width/2)], color=c_line, linewidth=lw_line)
             ax.tick_params(labelleft=False, left=False, labelbottom=False, bottom=False)
             if i==0:
                 fig.text(ax.get_position().x1-panel_xy[0], ax.get_position().y1-panel_xy[1], s=panel, fontsize=panel_fontsize)
@@ -789,7 +794,7 @@ class Figure_BCVVFC():
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot(111)
         ax.set_title(title, loc='left')
-        ax.imshow(np.rot90(data_linescanned[start:][:n_frame], 1), cmap='Greys_r', norm=Normalize(vmin=0, vmax=255), aspect=aspect)
+        ax.imshow(data_linescanned[start:][:n_frame].T, cmap='Greys_r', norm=Normalize(vmin=0, vmax=255), aspect=aspect)
         ax.tick_params(labelleft=False, left=False, labelbottom=True, bottom=True)
         xlocs, xlabs = plt.xticks()
         frame_num = np.arange(0, n_frame, 1)
@@ -856,6 +861,7 @@ class Figure_BCVVFC():
     def figure06(self,
                  data1_list, data1_parameter_list, 
                  data2,
+                 conversion_param=40., 
                  figsize=(25, 5), width_ratios=[1, 1, 0.5], wspace=0.3,
                  title1=None, title2=None, title3=None,
                  marker1='.', marker2='.', marker3='.',
@@ -876,7 +882,7 @@ class Figure_BCVVFC():
         ax0 = fig.add_subplot(spec[0])
         ax0.set_title(title1, loc='center')
         for i in range(len(data1_list)):  
-            ax0.scatter(np.full(data1_list[i].shape, data1_parameter_list[i]), data1_list[i], marker=marker1, c=c1, s=s1)
+            ax0.scatter(np.full(data1_list[i].shape, data1_parameter_list[i]*conversion_param), data1_list[i], marker=marker1, c=c1, s=s1)
         ax0.tick_params(labelleft=False, left=False, labelbottom=True, bottom=True)
         ax0.set_xlim(xlim1)
         ax0.set_ylim(ylim1)
@@ -886,7 +892,7 @@ class Figure_BCVVFC():
 
         ax1 = fig.add_subplot(spec[1])
         ax1.set_title(title2, loc='center')
-        ax1.scatter(data2[:, 1], data2[:, 0], marker=marker2, c=c2, s=s2)
+        ax1.scatter(data2[:, 1]*conversion_param, data2[:, 0], marker=marker2, c=c2, s=s2)
         ax1.tick_params(labelleft=False, left=False, labelbottom=True, bottom=True)
         ax1.set_xlim(xlim2)
         ax1.set_ylim(ylim2)
@@ -896,7 +902,7 @@ class Figure_BCVVFC():
 
         ax2 = fig.add_subplot(spec[2])
         ax2.set_title(title3, loc='center')
-        ax2.scatter(data2[:, 1], data2[:, 0], marker=marker3, c=c3, s=s3)
+        ax2.scatter(data2[:, 1]*conversion_param, data2[:, 0], marker=marker3, c=c3, s=s3)
         ax2.tick_params(labelleft=False, left=False, labelbottom=True, bottom=True)
         ax2.set_xlim(xlim3)
         ax2.set_ylim(ylim3)
